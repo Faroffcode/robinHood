@@ -1468,6 +1468,7 @@ class SyncUtils @Inject constructor(
                     }
                     val preservedSongs = localSongIndexesAbsentFromRemote(localIds, remoteIds)
                         .map(localSongs::get)
+                        .filter { it.setVideoId == null }
 
                     database.withTransaction {
                         database.clearPlaylist(playlistId)

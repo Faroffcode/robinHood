@@ -7,19 +7,19 @@ if (localPropertiesFile.exists()) {
     localProperties.load(localPropertiesFile.inputStream())
 }
 
-val baseApplicationId = "com.metrolist.music"
-val applicationIdOverride = System.getenv("METROLIST_APPLICATION_ID")?.takeIf { it.isNotBlank() }
-val appNameOverride = System.getenv("METROLIST_APP_NAME")?.takeIf { it.isNotBlank() }
+val baseApplicationId = "com.robinhood.music"
+val applicationIdOverride = System.getenv("ROBINHOOD_APPLICATION_ID")?.takeIf { it.isNotBlank() }
+val appNameOverride = System.getenv("ROBINHOOD_APP_NAME")?.takeIf { it.isNotBlank() }
 val buildCommit =
-    System.getenv("METROLIST_BUILD_COMMIT")
+    System.getenv("ROBINHOOD_BUILD_COMMIT")
         ?.trim()
         ?.takeIf { it.matches(Regex("[0-9a-fA-F]{7,40}")) }
         ?.take(7)
         ?.lowercase()
-val debugKeystorePathOverride = System.getenv("METROLIST_DEBUG_KEYSTORE_PATH")?.takeIf { it.isNotBlank() }
-val debugKeystorePassword = System.getenv("METROLIST_DEBUG_KEYSTORE_PASSWORD")?.takeIf { it.isNotBlank() } ?: "android"
-val debugKeyAlias = System.getenv("METROLIST_DEBUG_KEY_ALIAS")?.takeIf { it.isNotBlank() } ?: "androiddebugkey"
-val debugKeyPassword = System.getenv("METROLIST_DEBUG_KEY_PASSWORD")?.takeIf { it.isNotBlank() } ?: "android"
+val debugKeystorePathOverride = System.getenv("ROBINHOOD_DEBUG_KEYSTORE_PATH")?.takeIf { it.isNotBlank() }
+val debugKeystorePassword = System.getenv("ROBINHOOD_DEBUG_KEYSTORE_PASSWORD")?.takeIf { it.isNotBlank() } ?: "android"
+val debugKeyAlias = System.getenv("ROBINHOOD_DEBUG_KEY_ALIAS")?.takeIf { it.isNotBlank() } ?: "androiddebugkey"
+val debugKeyPassword = System.getenv("ROBINHOOD_DEBUG_KEY_PASSWORD")?.takeIf { it.isNotBlank() } ?: "android"
 val persistentDebugKeystoreFile = file("persistent-debug.keystore")
 val workflowDebugKeystoreFile = debugKeystorePathOverride?.let(::file)
 
@@ -33,7 +33,7 @@ plugins {
 }
 
 android {
-    namespace = "com.metrolist.music"
+    namespace = "com.robinhood.music"
     compileSdk = 37
 
     defaultConfig {
@@ -45,7 +45,7 @@ android {
         val baseVersionName = requireNotNull(versionName)
         buildConfigField("String", "BASE_VERSION_NAME", "\"$baseVersionName\"")
         buildCommit?.let { versionName = "$baseVersionName+$it" }
-        resValue("string", "app_name", appNameOverride ?: "Metrolist")
+        resValue("string", "app_name", appNameOverride ?: "RobinHood")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -133,7 +133,7 @@ android {
             }
             isDebuggable = true
             if (appNameOverride == null) {
-                resValue("string", "app_name", "Metrolist Debug")
+                resValue("string", "app_name", "RobinHood Debug")
             }
             signingConfig =
                 if (workflowDebugKeystoreFile != null) {
@@ -220,7 +220,7 @@ protobuf {
 }
 
 val cleanLegacyProtoSources = tasks.register<Delete>("cleanLegacyProtoSources") {
-    delete(layout.projectDirectory.dir("src/main/java/com/metrolist/music/listentogether/proto"))
+    delete(layout.projectDirectory.dir("src/main/java/com/robinhood/music/listentogether/proto"))
 }
 
 tasks.named("preBuild") {

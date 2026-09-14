@@ -1,0 +1,54 @@
+name: Rebrand to RobinHood
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  rebrand:
+    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Rebrand project
+        shell: bash
+        run: |
+          set -euo pipefail
+          changed=0
+          while IFS= read -r -d '' f; do
+            case "$f" in LICENSE|.git/*|.github/workflows/rebrand-robinhood.yml) continue ;; esac
+            if grep -Iq . "$f"; then
+              if grep -Eq 'Metrolist|metrolist|com\.metrolist\.music' "$f"; then
+                perl -0pi -e 's/com\.metrolist\.music/com.robinhood.music/g; s/METROLIST_APPLICATION_ID/ROBINHOOD_APPLICATION_ID/g; s/METROLIST_APP_NAME/ROBINHOOD_APP_NAME/g; s/METROLIST_BUILD_COMMIT/ROBINHOOD_BUILD_COMMIT/g; s/METROLIST_DEBUG_KEYSTORE_PATH/ROBINHOOD_DEBUG_KEYSTORE_PATH/g; s/METROLIST_DEBUG_KEYSTORE_PASSWORD/ROBINHOOD_DEBUG_KEYSTORE_PASSWORD/g; s/METROLIST_DEBUG_KEY_ALIAS/ROBINHOOD_DEBUG_KEY_ALIAS/g; s/METROLIST_DEBUG_KEY_PASSWORD/ROBINHOOD_DEBUG_KEY_PASSWORD/g; s/Metrolist-with-Google-Cast/RobinHood-with-Google-Cast/g; s/Metrolist-izzy/RobinHood-izzy/g; s/Metrolist\.apk/RobinHood.apk/g; s/Metrolist/RobinHood/g; s/metrolist/robinhood/g' "$f"
+                changed=1
+              fi
+            fi
+          done < <(git ls-files -z)
+
+          if [ -d app/src/main/kotlin/com/metrolist/music ]; then
+            mkdir -p app/src/main/kotlin/com/robinhood
+            git mv app/src/main/kotlin/com/metrolist/music app/src/main/kotlin/com/robinhood/music
+            changed=1
+          fi
+
+          if [ -d app/src/main/java/com/metrolist/music ]; then
+            mkdir -p app/src/main/java/com/robinhood
+            git mv app/src/main/java/com/metrolist/music app/src/main/java/com/robinhood/music
+            changed=1
+          fi
+
+          if [ "$changed" = 1 ] && git diff --quiet; then
+            echo 'No changes after scan.'
+            exit 0
+          fi
+
+          if ! git diff --quiet || ! git diff --cached --quiet; then
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add -A
+            git commit -m 'refactor: rebrand project as RobinHood [skip ci]'
+            git push
+          fi

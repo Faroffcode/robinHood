@@ -984,6 +984,7 @@ class MusicService :
                 newPlayer.playbackParameters = playbackParameters
                 newPlayer.volume = volume
                 newPlayer.playWhenReady = playWhenReady
+                newPlayer.pauseAtEndOfMediaItems = !cachedAutoplay
                 newPlayer.prepare()
 
                 player = newPlayer
@@ -1157,6 +1158,12 @@ class MusicService :
             dataStore.data.map { it[AutoplayKey] ?: true }.distinctUntilChanged().collect {
                 cachedAutoplay = it
                 player.pauseAtEndOfMediaItems = !cachedAutoplay
+                if (!cachedAutoplay) {
+                    crossfadeMessage?.cancel()
+                    crossfadeMessage = null
+                } else {
+                    scheduleCrossfade()
+                }
             }
         }
         scope.launch {
@@ -1342,6 +1349,7 @@ class MusicService :
             val crossfade = prefs[CrossfadeEnabledKey] ?: false
             player.setOffloadEnabled(if (crossfade) false else offload)
             player.skipSilenceEnabled = prefs[SkipSilenceKey] ?: false
+            player.pauseAtEndOfMediaItems = !(prefs[AutoplayKey] ?: true)
         } else {
             player.apply {
                 runBlocking {
@@ -1350,6 +1358,7 @@ class MusicService :
                     setOffloadEnabled(if (crossfade) false else offload)
                     skipSilenceEnabled = dataStore.get(SkipSilenceKey, false)
                 }
+                pauseAtEndOfMediaItems = !cachedAutoplay
             }
         }
         player.addAnalyticsListener(PlaybackStatsListener(false, this@MusicService))
@@ -4769,7 +4778,7 @@ class MusicService :
 
         crossfadeMessage = player.createMessage { _, _ ->
             val timer = sleepTimer
-            if (player.isPlaying && player.currentMediaItem?.mediaId == targetMediaId && (timer == null || !timer.pauseWhenSongEnd)) {
+            if (player.isPlaying && player.currentMediaItem?.mediaId == targetMediaId && (timer == null || !timer.pauseWhenSongEnd) && cachedAutoplay) {
                 startCrossfade()
             }
         }.apply {

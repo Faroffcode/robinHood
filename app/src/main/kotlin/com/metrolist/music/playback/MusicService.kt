@@ -1154,7 +1154,10 @@ class MusicService :
             dataStore.data.map { it[PersistentQueueKey] ?: true }.distinctUntilChanged().collect { cachedPersistentQueue = it }
         }
         scope.launch {
-            dataStore.data.map { it[AutoplayKey] ?: true }.distinctUntilChanged().collect { cachedAutoplay = it }
+            dataStore.data.map { it[AutoplayKey] ?: true }.distinctUntilChanged().collect {
+                cachedAutoplay = it
+                player.pauseAtEndOfMediaItems = !cachedAutoplay
+            }
         }
         scope.launch {
             dataStore.data.map { it[DisableLoadMoreWhenRepeatAllKey] ?: false }.distinctUntilChanged().collect { cachedDisableLoadMoreWhenRepeatAll = it }
@@ -4753,6 +4756,7 @@ class MusicService :
         
         val mediaCrossfadeDuration = crossfadeDuration.toLong()
 
+        if (!cachedAutoplay) return
         if (!crossfadeEnabled || crossfadeDuration <= 0f || player.duration == C.TIME_UNSET || player.duration <= mediaCrossfadeDuration) return
         if (crossfadeGapless && isNextItemGapless()) return
         if (!player.hasNextMediaItem() && player.repeatMode != REPEAT_MODE_ONE) return

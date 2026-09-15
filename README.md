@@ -212,27 +212,7 @@
 
 ---
 
-<div align="center">
 
-<h1><a id="support-the-project"></a>Support the Project</h1>
-
-<h3>RobinHood is free and open-source.</h3>
-
-#### Monero (XMR)
-
-<img src="assets/XMR.png" alt="Monero QR code" width="150" />
-
-```text
-44XjSELSWcgJTZiCKzjpCQWyXhokrH9RqH3rpp35FkSKi57T25hniHWHQNhLeXyFn3DDYqufmfRB1iEtENerZpJc7xJCcqt
-```
-
-#### Buy Me a Coffee
-
-<a href="https://www.buymeacoffee.com/mostafaalagamy">
-  <img src="assets/buymeacoffee.png" alt="Buy Me a Coffee" width="150" />
-</a>
-
-</div>
 
 ---
 
@@ -298,9 +278,7 @@
 
 <br/>
 
-<a href="https://www.blacksmith.sh">
-  <img src="assets/blacksmith-powered.png" alt="CI powered by Blacksmith" width="280" />
-</a>
+
 
 <h3>We also thank the entire open-source community! For every library, tool, and API that powers this project.</h3>
 
@@ -324,7 +302,7 @@ All trademarks, service marks, and intellectual property rights referenced in th
 
 <br/>
 
-**Made with ❤️ by [Mo Agamy](https://github.com/mostafaalagamy)**
+**Made with ❤️ by Imtiaz Haque
 
 **This project stands with Palestine 🇵🇸**
 

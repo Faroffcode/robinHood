@@ -208,7 +208,6 @@ jobs:
           ZIP_FILE="Source code.zip"
           TAR_FILE="Source code.tar.gz"
 
-          # Exclude build outputs, local Gradle state, and secrets/keystore files.
           git archive --format=zip --prefix="RobinHood-${VERSION}/" HEAD \
             -o "$ZIP_FILE"
           git archive --format=tar --prefix="RobinHood-${VERSION}/" HEAD \
@@ -245,7 +244,15 @@ jobs:
         run: |
           set -euo pipefail
           RELEASE_TAG="v${{ needs.check-version.outputs.new_version }}"
-          echo "Creating release $RELEASE_TAG"
+          echo "Preparing release $RELEASE_TAG"
+
+          # Releases are immutable by version. A rerun of the same workflow
+          # must not fail just because the release was already published.
+          if gh release view "$RELEASE_TAG" > /dev/null 2>&1; then
+            echo "Release $RELEASE_TAG already exists; skipping creation."
+            echo "Existing release: https://github.com/${{ github.repository }}/releases/tag/$RELEASE_TAG"
+            exit 0
+          fi
 
           {
             echo "Released by @${{ github.triggering_actor }}"

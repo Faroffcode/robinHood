@@ -33,18 +33,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.robinhood.music.BuildConfig
 import com.robinhood.music.LocalPlayerAwareWindowInsets
@@ -60,7 +59,6 @@ fun AboutScreen(
     val uriHandler = LocalUriHandler.current
     val windowInsets = LocalPlayerAwareWindowInsets.current
     val scrollState = rememberScrollState()
-    val surface = MaterialTheme.colorScheme.surface
     val onSurface = MaterialTheme.colorScheme.onSurface
     val muted = MaterialTheme.colorScheme.onSurfaceVariant
     val cardColor = if (MaterialTheme.colorScheme.isLight) {
@@ -107,7 +105,7 @@ fun AboutScreen(
             style = MaterialTheme.typography.labelMedium,
             color = muted,
             fontWeight = FontWeight.Medium,
-            letterSpacing = 4.dp.value.sp,
+            letterSpacing = 4.sp,
         )
 
         Spacer(Modifier.height(22.dp))
@@ -247,7 +245,7 @@ fun AboutScreen(
             style = MaterialTheme.typography.titleSmall,
             color = RobinHoodGreen,
             fontWeight = FontWeight.Bold,
-            letterSpacing = 3.dp.value.sp,
+            letterSpacing = 3.sp,
             textAlign = TextAlign.Center,
         )
 
@@ -257,7 +255,7 @@ fun AboutScreen(
             text = "LISTEN  •  DISCOVER  •  BELONG",
             style = MaterialTheme.typography.labelSmall,
             color = muted,
-            letterSpacing = 2.dp.value.sp,
+            letterSpacing = 2.sp,
             textAlign = TextAlign.Center,
         )
 

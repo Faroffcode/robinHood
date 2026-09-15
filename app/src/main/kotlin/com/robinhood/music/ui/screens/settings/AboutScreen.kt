@@ -33,7 +33,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.clip
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
@@ -42,6 +42,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -61,11 +62,7 @@ fun AboutScreen(
     val scrollState = rememberScrollState()
     val onSurface = MaterialTheme.colorScheme.onSurface
     val muted = MaterialTheme.colorScheme.onSurfaceVariant
-    val cardColor = if (MaterialTheme.colorScheme.isLight) {
-        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.42f)
-    } else {
-        RobinHoodDark.copy(alpha = 0.82f)
-    }
+    val cardColor = RobinHoodDark.copy(alpha = 0.82f)
 
     Column(
         modifier = Modifier

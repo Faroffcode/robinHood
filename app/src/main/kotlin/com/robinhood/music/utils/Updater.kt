@@ -135,7 +135,7 @@ object Updater {
                 
                 val releaseInfo = ReleaseInfo(
                     tagName = tagName,
-                    versionName = json.optString("name").ifBlank { tagName.removePrefix("v") },
+                    versionName = tagName.removePrefix("v"),
                     description = json.getString("body"),
                     releaseDate = json.getString("published_at"),
                     assets = parseAssets(json.getJSONArray("assets"))
@@ -173,9 +173,10 @@ object Updater {
                     
                     for (i in 0 until json.length()) {
                         val releaseObj = json.getJSONObject(i)
+                        val tagName = releaseObj.getString("tag_name")
                         releases.add(ReleaseInfo(
-                            tagName = releaseObj.getString("tag_name"),
-                            versionName = releaseObj.getString("name"),
+                            tagName = tagName,
+                            versionName = tagName.removePrefix("v"),
                             description = releaseObj.getString("body"),
                             releaseDate = releaseObj.getString("published_at"),
                             assets = parseAssets(releaseObj.getJSONArray("assets"))

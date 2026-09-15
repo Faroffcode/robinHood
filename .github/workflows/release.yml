@@ -1,4 +1,5 @@
 name: RobinHood Release
+
 on:
   push:
     branches:
@@ -26,55 +27,62 @@ jobs:
       - name: Check if version changed
         id: check_version
         run: |
+          set -euo pipefail
           if [ ! -f app/build.gradle.kts ]; then
             echo "File app/build.gradle.kts does not exist"
-            echo "version_changed=false" >> $GITHUB_OUTPUT
+            echo "version_changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
+
           NEW_VERSION=$(grep -m1 -oP '^\s*versionName\s*=\s*"\K[^"]+' app/build.gradle.kts || echo "")
           VERSION_CODE=$(grep -m1 -oP '^\s*versionCode\s*=\s*\K\d+' app/build.gradle.kts || echo "")
-          if [ -z "$NEW_VERSION" ]; then
-            echo "Could not find versionName in app/build.gradle.kts"
-            echo "version_changed=false" >> $GITHUB_OUTPUT
-            exit 0
+
+          if [ -z "$NEW_VERSION" ] || [ -z "$VERSION_CODE" ]; then
+            echo "Could not find versionName/versionCode in app/build.gradle.kts"
+            echo "version_changed=false" >> "$GITHUB_OUTPUT"
+            exit 1
           fi
+
           if [[ ! "$NEW_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             echo "versionName must use MAJOR.MINOR.PATCH.BUILD (for example 1.0.0.0), got: $NEW_VERSION"
             exit 1
           fi
+
           echo "Current version: $NEW_VERSION (code: $VERSION_CODE)"
+
           if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
             echo "Manual release requested for version $NEW_VERSION"
-            echo "version_changed=true" >> $GITHUB_OUTPUT
-            echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
-            echo "version_code=$VERSION_CODE" >> $GITHUB_OUTPUT
+            echo "version_changed=true" >> "$GITHUB_OUTPUT"
+            echo "new_version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
+            echo "version_code=$VERSION_CODE" >> "$GITHUB_OUTPUT"
             exit 0
           fi
+
           if git show HEAD^:app/build.gradle.kts > /dev/null 2>&1; then
             OLD_VERSION=$(git show HEAD^:app/build.gradle.kts | grep -m1 -oP '^\s*versionName\s*=\s*"\K[^"]+' || echo "")
             echo "Previous version: $OLD_VERSION"
             if [ "$OLD_VERSION" != "$NEW_VERSION" ]; then
               echo "Version changed from $OLD_VERSION to $NEW_VERSION"
-              echo "version_changed=true" >> $GITHUB_OUTPUT
-              echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
-              echo "version_code=$VERSION_CODE" >> $GITHUB_OUTPUT
+              echo "version_changed=true" >> "$GITHUB_OUTPUT"
+              echo "new_version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
+              echo "version_code=$VERSION_CODE" >> "$GITHUB_OUTPUT"
             else
               echo "Version unchanged: $NEW_VERSION"
-              echo "version_changed=false" >> $GITHUB_OUTPUT
+              echo "version_changed=false" >> "$GITHUB_OUTPUT"
             fi
           else
             echo "First version detected: $NEW_VERSION"
-            echo "version_changed=true" >> $GITHUB_OUTPUT
-            echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
-            echo "version_code=$VERSION_CODE" >> $GITHUB_OUTPUT
+            echo "version_changed=true" >> "$GITHUB_OUTPUT"
+            echo "new_version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
+            echo "version_code=$VERSION_CODE" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Debug output
         run: |
           echo "Debug Information:"
-          echo "  - version_changed: ${{ steps.check-version.outputs.version_changed }}"
-          echo "  - new_version: ${{ steps.check-version.outputs.new_version }}"
-          echo "  - version_code: ${{ steps.check-version.outputs.version_code }}"
+          echo "  - version_changed: ${{ steps.check_version.outputs.version_changed }}"
+          echo "  - new_version: ${{ steps.check_version.outputs.new_version }}"
+          echo "  - version_code: ${{ steps.check_version.outputs.version_code }}"
           echo "  - event_name: ${{ github.event_name }}"
 
   build:
@@ -130,6 +138,7 @@ jobs:
           LASTFM_SECRET: ${{ secrets.LASTFM_SECRET }}
       - name: Move and rename signed APKs
         run: |
+          set -euo pipefail
           OUTPUT_DIR="app/build/outputs/apk/${{ matrix.variant }}/release"
           mkdir -p "$OUTPUT_DIR/out"
           SIGNED_APK=$(find "$OUTPUT_DIR" -maxdepth 1 -type f -name "*.apk" | head -1)
@@ -186,15 +195,12 @@ jobs:
           git archive --format=zip --prefix="RobinHood-${VERSION}/" HEAD -o "$ZIP_FILE"
           git archive --format=tar --prefix="RobinHood-${VERSION}/" HEAD | gzip -9 > "$TAR_FILE"
           mv "$ZIP_FILE" "$TAR_FILE" release_files/
-          echo "Source archives ready:"
-          ls -lh release_files/"$ZIP_FILE" release_files/"$TAR_FILE"
       - name: Parse release notes from changelog
         run: |
           VERSION="${{ needs.check-version.outputs.new_version }}"
           chmod +x .github/scripts/parse_changelog.sh
           if bash .github/scripts/parse_changelog.sh "$VERSION" changelog.md > release_notes.md; then
             echo "Release notes sourced from changelog.md for v$VERSION"
-            head -20 release_notes.md
           else
             echo "::warning::v$VERSION not found in changelog.md — falling back to git log"
             {
@@ -202,51 +208,62 @@ jobs:
               echo ""
               git log "$(git describe --tags --abbrev=0 2>/dev/null || echo "HEAD~10")..HEAD" --pretty=format:"- %s" --no-merges | head -10 || echo "- Initial release"
             } > release_notes.md
-            cat release_notes.md
           fi
+      - name: Validate release version and tag
+        env:
+          VERSION: ${{ needs.check-version.outputs.new_version }}
+          VERSION_CODE: ${{ needs.check-version.outputs.version_code }}
+        run: |
+          set -euo pipefail
+          EXPECTED_TAG="v${VERSION}"
+          echo "Expected release tag: $EXPECTED_TAG"
+          echo "Android versionName: $VERSION"
+          echo "Android versionCode: $VERSION_CODE"
+
+          if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Invalid version: $VERSION"
+            exit 1
+          fi
+
+          if [[ "$VERSION_CODE" -lt 1 ]]; then
+            echo "versionCode must be >= 1"
+            exit 1
+          fi
+
+          if [[ "$EXPECTED_TAG" != "v${VERSION}" ]]; then
+            echo "Release tag mismatch"
+            exit 1
+          fi
+
       - name: Create Release
         env:
           GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.check-version.outputs.new_version }}
         run: |
           set -euo pipefail
-          BASE_VERSION="${{ needs.check-version.outputs.new_version }}"
-          RELEASE_TAG="v${BASE_VERSION}"
+          RELEASE_TAG="v${VERSION}"
 
-          # Use the requested version when it is free. If a release or tag
-          # already exists, increment only the BUILD component until free.
-          if gh release view "$RELEASE_TAG" > /dev/null 2>&1 || gh api "repos/${{ github.repository }}/git/ref/tags/$RELEASE_TAG" > /dev/null 2>&1; then
-            echo "$RELEASE_TAG already exists. Finding next available build number..."
-            if [[ "$BASE_VERSION" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
-              MAJOR="${BASH_REMATCH[1]}"
-              MINOR="${BASH_REMATCH[2]}"
-              PATCH="${BASH_REMATCH[3]}"
-              BUILD="${BASH_REMATCH[4]}"
-            else
-              echo "Invalid version format: $BASE_VERSION"
-              exit 1
-            fi
-            while true; do
-              BUILD=$((BUILD + 1))
-              RELEASE_TAG="v${MAJOR}.${MINOR}.${PATCH}.${BUILD}"
-              if ! gh release view "$RELEASE_TAG" > /dev/null 2>&1 && ! gh api "repos/${{ github.repository }}/git/ref/tags/$RELEASE_TAG" > /dev/null 2>&1; then
-                break
-              fi
-              echo "$RELEASE_TAG already exists; trying next..."
-            done
-            echo "Using new release tag: $RELEASE_TAG"
-          else
-            echo "No release or tag exists for $RELEASE_TAG; creating it."
+          # Never mutate the requested release tag. A collision is an error,
+          # because silently creating vX.Y.Z.B+1 produces an APK/tag mismatch.
+          if gh release view "$RELEASE_TAG" > /dev/null 2>&1; then
+            echo "Release $RELEASE_TAG already exists. Refusing to create a mismatched release."
+            exit 1
+          fi
+
+          if gh api "repos/${{ github.repository }}/git/ref/tags/$RELEASE_TAG" > /dev/null 2>&1; then
+            echo "Tag $RELEASE_TAG already exists. Refusing to create a release from a reused tag."
+            exit 1
           fi
 
           {
             echo "Released by @${{ github.triggering_actor }}"
             echo ""
-            if [ "$RELEASE_TAG" != "v${BASE_VERSION}" ]; then
-              echo "Original app version: v${BASE_VERSION}"
-              echo "Release build tag: $RELEASE_TAG"
-              echo ""
-            fi
             cat release_notes.md
+            echo ""
+            echo "## Version"
+            echo "- App version: v${VERSION}"
+            echo "- Android versionCode: ${{ needs.check-version.outputs.version_code }}"
+            echo "- Release tag: $RELEASE_TAG"
             echo ""
             echo "## Downloads"
             echo "- RobinHood.apk — FOSS build"
@@ -260,6 +277,7 @@ jobs:
             --title "RobinHood $RELEASE_TAG" \
             --notes-file attributed_release_notes.md \
             --latest \
+            --target "${GITHUB_SHA}" \
             release_files/*.apk \
             "release_files/Source code.zip" \
             "release_files/Source code.tar.gz"
@@ -268,9 +286,10 @@ jobs:
 
       - name: Update release summary
         run: |
-          echo "## Release Summary" >> $GITHUB_STEP_SUMMARY
-          echo "- **Version**: v${{ needs.check-version.outputs.new_version }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Version Code**: ${{ needs.check-version.outputs.version_code }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Released by**: @${{ github.triggering_actor }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Files built**: $(find release_files -maxdepth 1 -type f | wc -l)" >> $GITHUB_STEP_SUMMARY
-          echo "- **Release URL**: https://github.com/${{ github.repository }}/releases" >> $GITHUB_STEP_SUMMARY
+          echo "## Release Summary" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Version**: v${{ needs.check-version.outputs.new_version }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Version Code**: ${{ needs.check-version.outputs.version_code }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Release Tag**: v${{ needs.check-version.outputs.new_version }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Released by**: @${{ github.triggering_actor }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Files built**: $(find release_files -maxdepth 1 -type f | wc -l)" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Release URL**: https://github.com/${{ github.repository }}/releases" >> "$GITHUB_STEP_SUMMARY"

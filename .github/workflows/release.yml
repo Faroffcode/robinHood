@@ -185,6 +185,46 @@ jobs:
           find downloaded_artifacts -name "*.apk" -exec cp {} release_files/ \;
           echo "APKs ready for release:"
           ls -la release_files/
+      - name: Generate automatic download guide
+        run: |
+          set -euo pipefail
+          GUIDE="download_guide.md"
+          : > "$GUIDE"
+
+          echo "## 📥 Which APK should I download?" >> "$GUIDE"
+          echo "" >> "$GUIDE"
+
+          if [ -f "release_files/RobinHood.apk" ]; then
+            echo "**👉 Recommended for most users: \`RobinHood.apk\`**" >> "$GUIDE"
+            echo "" >> "$GUIDE"
+            echo "This is the standard FOSS build and is the recommended choice if you're not sure which version to install." >> "$GUIDE"
+          elif [ -n "$(find release_files -maxdepth 1 -type f -name '*.apk' -print -quit)" ]; then
+            FIRST_APK=$(find release_files -maxdepth 1 -type f -name '*.apk' -printf '%f\n' | sort | head -1)
+            echo "**👉 Recommended APK: \`$FIRST_APK\`**" >> "$GUIDE"
+            echo "" >> "$GUIDE"
+            echo "This is the default APK selected automatically because no standard FOSS build was found." >> "$GUIDE"
+          else
+            echo "⚠️ No APK files were produced." >> "$GUIDE"
+            exit 1
+          fi
+
+          echo "" >> "$GUIDE"
+          echo "### Other builds" >> "$GUIDE"
+          if [ -f "release_files/RobinHood.apk" ]; then
+            echo "- **\`RobinHood.apk\`** — ⭐ Standard FOSS build" >> "$GUIDE"
+          fi
+          if [ -f "release_files/RobinHood-with-Google-Cast.apk" ]; then
+            echo "- **\`RobinHood-with-Google-Cast.apk\`** — Google Cast / Chromecast support" >> "$GUIDE"
+          fi
+          if [ -f "release_files/RobinHood-izzy.apk" ]; then
+            echo "- **\`RobinHood-izzy.apk\`** — IzzyOnDroid-compatible build" >> "$GUIDE"
+          fi
+
+          echo "" >> "$GUIDE"
+          echo "### 🚀 Quick recommendation" >> "$GUIDE"
+          echo "If you're unsure, download the APK marked **Recommended for most users** above." >> "$GUIDE"
+
+          cat "$GUIDE"
       - name: Create source archives
         env:
           VERSION: ${{ needs.check-version.outputs.new_version }}
@@ -243,8 +283,6 @@ jobs:
           set -euo pipefail
           RELEASE_TAG="v${VERSION}"
 
-          # Never mutate the requested release tag. A collision is an error,
-          # because silently creating vX.Y.Z.B+1 produces an APK/tag mismatch.
           if gh release view "$RELEASE_TAG" > /dev/null 2>&1; then
             echo "Release $RELEASE_TAG already exists. Refusing to create a mismatched release."
             exit 1
@@ -260,17 +298,17 @@ jobs:
             echo ""
             cat release_notes.md
             echo ""
+            cat download_guide.md
+            echo ""
             echo "## Version"
             echo "- App version: v${VERSION}"
             echo "- Android versionCode: ${{ needs.check-version.outputs.version_code }}"
             echo "- Release tag: $RELEASE_TAG"
             echo ""
-            echo "## Downloads"
-            echo "- RobinHood.apk — FOSS build"
-            echo "- RobinHood-with-Google-Cast.apk — Google Cast build"
-            echo "- RobinHood-izzy.apk — IzzyOnDroid-compatible build"
-            echo "- Source code.zip — source archive"
-            echo "- Source code.tar.gz — source archive"
+            echo "## Available files"
+            find release_files -maxdepth 1 -type f -printf '%f\n' | sort | while IFS= read -r file; do
+              echo "- $file"
+            done
           } > attributed_release_notes.md
 
           gh release create "$RELEASE_TAG" \

@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.BorderStroke
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -50,9 +51,6 @@ import com.robinhood.music.BuildConfig
 import com.robinhood.music.LocalPlayerAwareWindowInsets
 import com.robinhood.music.R
 
-private val RobinHoodGreen = Color(0xFF22E879)
-private val RobinHoodDark = Color(0xFF07100C)
-
 @Composable
 fun AboutScreen(
     navController: NavController,
@@ -60,9 +58,11 @@ fun AboutScreen(
     val uriHandler = LocalUriHandler.current
     val windowInsets = LocalPlayerAwareWindowInsets.current
     val scrollState = rememberScrollState()
-    val onSurface = MaterialTheme.colorScheme.onSurface
-    val muted = MaterialTheme.colorScheme.onSurfaceVariant
-    val cardColor = RobinHoodDark.copy(alpha = 0.82f)
+    val colors = MaterialTheme.colorScheme
+    val onSurface = colors.onSurface
+    val muted = colors.onSurfaceVariant
+    val primary = colors.primary
+    val cardColor = colors.surfaceContainer
 
     Column(
         modifier = Modifier
@@ -87,9 +87,7 @@ fun AboutScreen(
         Text(
             text = buildAnnotatedString {
                 append("Robin")
-                withStyle(SpanStyle(color = RobinHoodGreen)) {
-                    append("Hood")
-                }
+                withStyle(SpanStyle(color = primary)) { append("Hood") }
             },
             style = MaterialTheme.typography.displaySmall,
             fontWeight = FontWeight.ExtraBold,
@@ -111,10 +109,7 @@ fun AboutScreen(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(28.dp),
             colors = CardDefaults.cardColors(containerColor = cardColor),
-            border = androidx.compose.foundation.BorderStroke(
-                1.dp,
-                RobinHoodGreen.copy(alpha = 0.16f),
-            ),
+            border = BorderStroke(1.dp, primary.copy(alpha = 0.16f)),
         ) {
             Column(
                 modifier = Modifier.padding(horizontal = 18.dp, vertical = 22.dp),
@@ -123,9 +118,7 @@ fun AboutScreen(
                 Text(
                     text = buildAnnotatedString {
                         append("About ")
-                        withStyle(SpanStyle(color = RobinHoodGreen)) {
-                            append("RobinHood")
-                        }
+                        withStyle(SpanStyle(color = primary)) { append("RobinHood") }
                     },
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
@@ -160,13 +153,66 @@ fun AboutScreen(
         Spacer(Modifier.height(16.dp))
 
         Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { uriHandler.openUri("https://faroffcode.github.io/HELP/") },
+            shape = RoundedCornerShape(24.dp),
+            colors = CardDefaults.cardColors(containerColor = colors.primaryContainer),
+            border = BorderStroke(1.dp, primary.copy(alpha = 0.24f)),
+        ) {
+            Row(
+                modifier = Modifier.padding(18.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(58.dp)
+                        .clip(RoundedCornerShape(18.dp))
+                        .background(colors.onPrimaryContainer.copy(alpha = 0.08f)),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text(
+                        text = "♥",
+                        color = colors.onPrimaryContainer,
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.Bold,
+                    )
+                }
+
+                Spacer(Modifier.width(16.dp))
+
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = "Support RobinHood",
+                        style = MaterialTheme.typography.titleLarge,
+                        color = colors.onPrimaryContainer,
+                        fontWeight = FontWeight.Bold,
+                    )
+                    Spacer(Modifier.height(3.dp))
+                    Text(
+                        text = "Help keep independent development going with a UPI donation.",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = colors.onPrimaryContainer.copy(alpha = 0.82f),
+                    )
+                    Spacer(Modifier.height(8.dp))
+                    Text(
+                        text = "DONATE  →",
+                        style = MaterialTheme.typography.labelLarge,
+                        color = colors.onPrimaryContainer,
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = 1.5.sp,
+                    )
+                }
+            }
+        }
+
+        Spacer(Modifier.height(16.dp))
+
+        Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(24.dp),
             colors = CardDefaults.cardColors(containerColor = cardColor),
-            border = androidx.compose.foundation.BorderStroke(
-                1.dp,
-                RobinHoodGreen.copy(alpha = 0.12f),
-            ),
+            border = BorderStroke(1.dp, primary.copy(alpha = 0.12f)),
         ) {
             Row(
                 modifier = Modifier.padding(18.dp),
@@ -176,17 +222,13 @@ fun AboutScreen(
                     modifier = Modifier
                         .size(86.dp)
                         .clip(RoundedCornerShape(43.dp))
-                        .background(RobinHoodGreen.copy(alpha = 0.08f))
-                        .border(
-                            2.dp,
-                            RobinHoodGreen,
-                            RoundedCornerShape(43.dp),
-                        ),
+                        .background(primary.copy(alpha = 0.08f))
+                        .border(2.dp, primary, RoundedCornerShape(43.dp)),
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
                         text = "Faroff",
-                        color = RobinHoodGreen,
+                        color = primary,
                         style = MaterialTheme.typography.labelLarge,
                         fontWeight = FontWeight.Bold,
                     )
@@ -195,11 +237,7 @@ fun AboutScreen(
                 Spacer(Modifier.width(18.dp))
 
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = "Developed by",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = muted,
-                    )
+                    Text("Developed by", style = MaterialTheme.typography.bodyMedium, color = muted)
                     Text(
                         text = "Imtiaz Haque (FAROFF)",
                         style = MaterialTheme.typography.titleLarge,
@@ -240,7 +278,7 @@ fun AboutScreen(
         Text(
             text = "GOOD MUSIC SHOULD BE FREE",
             style = MaterialTheme.typography.titleSmall,
-            color = RobinHoodGreen,
+            color = primary,
             fontWeight = FontWeight.Bold,
             letterSpacing = 3.sp,
             textAlign = TextAlign.Center,
@@ -273,6 +311,9 @@ private fun AboutFeature(
     description: String,
     onSurface: Color,
 ) {
+    val primary = MaterialTheme.colorScheme.primary
+    val muted = MaterialTheme.colorScheme.onSurfaceVariant
+
     Column(
         modifier = Modifier.width(70.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -281,17 +322,13 @@ private fun AboutFeature(
             modifier = Modifier
                 .size(50.dp)
                 .clip(RoundedCornerShape(16.dp))
-                .background(RobinHoodGreen.copy(alpha = 0.09f))
-                .border(
-                    1.dp,
-                    RobinHoodGreen.copy(alpha = 0.22f),
-                    RoundedCornerShape(16.dp),
-                ),
+                .background(primary.copy(alpha = 0.09f))
+                .border(1.dp, primary.copy(alpha = 0.22f), RoundedCornerShape(16.dp)),
             contentAlignment = Alignment.Center,
         ) {
             Text(
                 text = icon,
-                color = RobinHoodGreen,
+                color = primary,
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
             )
@@ -312,7 +349,7 @@ private fun AboutFeature(
         Text(
             text = description,
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = muted,
             textAlign = TextAlign.Center,
         )
     }
@@ -325,31 +362,26 @@ private fun AboutLink(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
 ) {
+    val colors = MaterialTheme.colorScheme
+
     Card(
         modifier = modifier.clickable(onClick = onClick),
         shape = RoundedCornerShape(18.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = RobinHoodGreen.copy(alpha = 0.08f),
-        ),
-        border = androidx.compose.foundation.BorderStroke(
-            1.dp,
-            RobinHoodGreen.copy(alpha = 0.18f),
-        ),
+        colors = CardDefaults.cardColors(containerColor = colors.primary.copy(alpha = 0.08f)),
+        border = BorderStroke(1.dp, colors.primary.copy(alpha = 0.18f)),
     ) {
-        Column(
-            modifier = Modifier.padding(horizontal = 14.dp, vertical = 12.dp),
-        ) {
+        Column(modifier = Modifier.padding(horizontal = 14.dp, vertical = 12.dp)) {
             Text(
                 text = label,
                 style = MaterialTheme.typography.labelLarge,
-                color = RobinHoodGreen,
+                color = colors.primary,
                 fontWeight = FontWeight.Bold,
             )
             Spacer(Modifier.height(3.dp))
             Text(
                 text = value,
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = colors.onSurfaceVariant,
                 maxLines = 2,
             )
         }

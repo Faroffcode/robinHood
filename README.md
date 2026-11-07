@@ -1,331 +1,94 @@
 <div align="center">
 
-<img src="app/src/main/res/mipmap/robinhood_logo.png" alt="RobinHood app icon" width="200" />
+<img src="app/src/main/res/mipmap/robinhood_logo.png" alt="RobinHood app icon" width="160" />
 
 # RobinHood
 
-### Open-source YouTube Music client for Android
+**An open-source YouTube Music client for Android**
 
-RobinHood is an Android music streaming app for discovering and playing music from YouTube Music, with background playback, offline downloads, synchronized lyrics, playlists, and a customizable Material 3 interface.
-
-<br/>
-
-
-<br/>
-<br/>
+Stream music, manage your library, enjoy synced lyrics, and customize your listening experience.
 
 [![Latest release](https://img.shields.io/github/v/release/Faroffcode/robinHood?style=for-the-badge&labelColor=0d1117)](https://github.com/Faroffcode/robinHood/releases)
 [![License](https://img.shields.io/github/license/Faroffcode/robinHood?style=for-the-badge&labelColor=0d1117)](https://github.com/Faroffcode/robinHood/blob/main/LICENSE)
 [![Downloads](https://img.shields.io/github/downloads/Faroffcode/robinHood/total?style=for-the-badge&labelColor=0d1117)](https://github.com/Faroffcode/robinHood/releases)
 
-<br/>
-
 [![Discord](https://img.shields.io/badge/Discord-%235865F2.svg?style=for-the-badge&logo=discord&logoColor=white&labelColor=0d1117)](https://dsc.gg/robinhood)
 [![Telegram](https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white&labelColor=0d1117)](https://t.me/robinhoodapp)
 
-<br/>
-
-[**Download**](#download-now) · [**Features**](#features) · [**Translate**](#translations) · [**FAQ**](#faq) · [**Support**](#support-the-project)
+[Download](#download) · [Features](#features) · [Screenshots](#screenshots) · [Translations](#translations)
 
 </div>
 
-> [!WARNING]
-> # ROBINHOOD
-> RobinHood is an independent YouTube Music client for Android.
+## About
 
-> [!WARNING]
-> **Regional Restriction** - If YouTube Music is unavailable in your region, this app will not work without a **VPN or proxy** connecting to a supported region.
+RobinHood is an independent, open-source music streaming app for Android that uses YouTube Music as its music source. Built with Kotlin and Jetpack Compose, it combines music discovery, background playback, offline downloads, synced lyrics, and library management in a customizable interface.
 
-## About RobinHood
+> **Regional availability:** If YouTube Music is unavailable in your region, a VPN or proxy connecting to a supported region may be required.
 
-RobinHood is an independent, open-source YouTube Music client built for Android. It brings music discovery, streaming, library management, and playback customization together in one mobile app. The project is built with Kotlin and Jetpack Compose, using Material 3 for a modern Android interface.
-
-Whether you want to stream songs, listen in the background, save music for offline listening, follow synchronized lyrics, or organize playlists, RobinHood provides a feature-rich way to enjoy the YouTube Music catalog on Android.
-
-**Project highlights**
-- **Platform:** Android (Android 8.0 / API 26 and later)
-- **Language:** Kotlin
-- **UI toolkit:** Jetpack Compose and Material 3
-- **Music source:** YouTube Music
-- **License:** GNU General Public License v3.0 (GPL-3.0)
-
----
+## Screenshots
 
 <div align="center">
 
-<h1><a id="screenshots"></a>Screenshots</h1>
-
-<img src="fastlane/metadata/android/en-US/images/screenshots/screenshot_1.png" alt="Home screen" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/screenshots/screenshot_2.png" alt="Artist screen" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/screenshots/screenshot_3.png" alt="Recognize music screen" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/screenshots/screenshot_4.png" alt="Listen together screen" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/screenshots/screenshot_5.png" alt="Player screen" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/screenshots/screenshot_6.png" alt="Player lyrics screen" width="30%" />
+<img src="fastlane/metadata/android/en-US/images/screenshots/screenshot_1.png" alt="RobinHood home screen" width="30%" />
+<img src="fastlane/metadata/android/en-US/images/screenshots/screenshot_2.png" alt="RobinHood artist screen" width="30%" />
+<img src="fastlane/metadata/android/en-US/images/screenshots/screenshot_3.png" alt="RobinHood music recognition screen" width="30%" />
+<img src="fastlane/metadata/android/en-US/images/screenshots/screenshot_4.png" alt="RobinHood listen together screen" width="30%" />
+<img src="fastlane/metadata/android/en-US/images/screenshots/screenshot_5.png" alt="RobinHood player screen" width="30%" />
+<img src="fastlane/metadata/android/en-US/images/screenshots/screenshot_6.png" alt="RobinHood lyrics screen" width="30%" />
 
 </div>
 
----
+## Features
+
+| Category | Features |
+| --- | --- |
+| **Playback** | YouTube Music streaming, background playback, offline downloads and caching, skip silence, sleep timer |
+| **Audio** | Equalizer, audio normalization, tempo and pitch control, crossfade |
+| **Lyrics & discovery** | Synced lyrics, lyrics translation, quick picks, search for songs, albums, artists, videos and playlists |
+| **Library** | Local playlists, playlist import, queue management, YouTube Music account sync |
+| **Social** | Listen together, Last.fm scrobbling, Discord Rich Presence |
+| **Interface** | Home screen widget, Material 3, dynamic colors, light, dark, black and dynamic themes |
+
+## Download
+
+### Stable release
 
 <div align="center">
 
-<h1><a id="features"></a>Features</h1>
-
-<table>
-  <tr>
-    <td width="50%" valign="top">
-
-#### Playback
-- Stream any song or video from YouTube Music
-- Background playback
-- Download & cache for offline use
-- Skip silence
-- Sleep timer
-
-</td>
-    <td width="50%" valign="top">
-
-#### Audio
-- Audio normalization
-- Tempo & pitch control
-- Equalizer
-- Crossfade
-
-</td>
-  </tr>
-  <tr>
-    <td width="50%" valign="top">
-
-#### Lyrics & Discovery
-- Live synced lyrics
-- AI-powered lyrics translation
-- Personalized quick picks
-- Search songs, albums, artists, videos, and playlists
-
-</td>
-    <td width="50%" valign="top">
-
-#### Library & Account
-- Full library management
-- Local playlists
-- Import playlists
-- Reorder songs in playlist or queue
-- YouTube Music account login
-- Sync songs, artists, albums, and playlists
-
-</td>
-  </tr>
-  <tr>
-    <td width="50%" valign="top">
-
-#### Social
-- Listen together with friends in real-time
-- Last.fm integration for scrobbling
-- Safe Discord Rich Presence
-
-</td>
-    <td width="50%" valign="top">
-
-#### Interface
-- Home screen widget
-- Light / Dark / Black / Dynamic theme modes
-- Dynamic color + 19 preset color palettes
-- Built with Material 3
-
-</td>
-  </tr>
-</table>
+| Obtainium | IzzyOnDroid |
+| --- | --- |
+| [<img src="assets/badges/obtainium.svg" alt="Obtainium" height="72" />](https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/Faroffcode/robinHood/) | [<img src="assets/badges/izzyondroid.svg" alt="IzzyOnDroid" height="72" />](https://github.com/Faroffcode/robinHood/releases) |
+| OpenAPK | GitHub |
+| [<img src="assets/badges/openapk.svg" alt="OpenAPK" height="72" />](https://github.com/Faroffcode/robinHood/releases) | [<img src="assets/badges/github-stable.svg" alt="Download stable APK" height="72" />](https://github.com/Faroffcode/robinHood/releases/latest/download/RobinHood.apk) |
 
 </div>
 
----
+### Nightly build
 
-<div align="center">
+[Download the nightly build with Google Cast](https://github.com/Faroffcode/robinHood/releases/download/nightly/RobinHood-with-Google-Cast.apk)
 
-<h1><a id="download-now"></a>Download Now</h1>
+See [all releases](https://github.com/Faroffcode/robinHood/releases).
 
-<h2>Stable Release</h2>
+## Translations
 
-<table>
-  <tr>
-    <th align="center">Obtainium</th>
-    <th align="center">IzzyOnDroid</th>
-  </tr>
-  <tr>
-    <td align="center">
-      <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/Faroffcode/robinHood/">
-        <img src="assets/badges/obtainium.svg" alt="Add RobinHood to Obtainium" height="100">
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://github.com/Faroffcode/robinHood/releases">
-        <img src="assets/badges/izzyondroid.svg" alt="Get RobinHood releases" height="100">
-      </a>
-    </td>
-  </tr>
-  <tr>
-    <th align="center">OpenAPK</th>
-    <th align="center">GitHub</th>
-  </tr>
-  <tr>
-    <td align="center">
-      <a href="https://github.com/Faroffcode/robinHood/releases">
-        <img src="assets/badges/openapk.svg" alt="Get RobinHood on GitHub" height="100">
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://github.com/Faroffcode/robinHood/releases/latest/download/RobinHood.apk">
-        <img src="assets/badges/github-stable.svg" alt="Get the stable RobinHood release on GitHub" height="100">
-      </a>
-    </td>
-  </tr>
-</table>
-
-<h2>Nightly Build</h2>
-
-<table>
-  <tr>
-    <th align="center">GitHub</th>
-  </tr>
-  <tr>
-    <td align="center">
-      <a href="https://github.com/Faroffcode/robinHood/releases/download/nightly/RobinHood-with-Google-Cast.apk">
-        <img src="assets/badges/github-nightly.svg" alt="Get the RobinHood nightly build on GitHub" height="120">
-      </a>
-    </td>
-  </tr>
-</table>
-
-</div>
-
----
-
-<div align="center">
-
-<h1><a id="faq"></a>FAQ</h1>
-
-<h3>Got questions? Check the project issues and release notes for the latest information.</h3>
-
-</div>
-
----
-
-<div align="center">
-
-<h1><a id="translations"></a>Translations</h1>
+RobinHood translations are managed through Weblate. [Help translate the app](https://hosted.weblate.org/projects/RobinHood/).
 
 [![Translation status](https://img.shields.io/weblate/progress/robinhood?style=for-the-badge&labelColor=0d1117)](https://hosted.weblate.org/engage/robinhood/)
 
-<h3>We use Weblate to translate RobinHood.</h3>
+## Acknowledgements
 
-<a href="https://hosted.weblate.org/projects/RobinHood/">
-  <img src="https://hosted.weblate.org/widget/RobinHood/horizontal-auto.svg" alt="RobinHood translation status" />
-</a>
+RobinHood is inspired by [InnerTune](https://github.com/z-huang) and [OuterTune](https://github.com/DD3Boh).
 
-<h3>Thank you! Every translation makes RobinHood more accessible.</h3>
+Thanks to the projects and contributors behind [Better Lyrics](https://better-lyrics.boidu.dev), [metroserver](https://github.com/Faroffcode/metroserver), [MusicRecognizer](https://github.com/aleksey-saenko/MusicRecognizer), [zemer-cipher](https://github.com/ZemerTeam/zemer-cipher), and the open-source community.
 
-</div>
+## Disclaimer
 
----
-
-
+RobinHood is an independent project and is not affiliated with, endorsed by, or associated with YouTube, Google LLC, or their affiliates. All trademarks and other intellectual property belong to their respective owners.
 
 ---
 
 <div align="center">
 
-<h1>Special Thanks</h1>
-
-<h3>RobinHood stands on the shoulders of incredible open-source work.</h3>
-
-<h3>Main Inspirations</h3>
-
-<table>
-  <thead>
-    <tr>
-      <th align="center">Project</th>
-      <th align="center">Authors</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td align="center"><strong>InnerTune</strong></td>
-      <td align="center"><a href="https://github.com/z-huang">Zion Huang</a> · <a href="https://github.com/Malopieds">Malopieds</a></td>
-    </tr>
-    <tr>
-      <td align="center"><strong>OuterTune</strong></td>
-      <td align="center"><a href="https://github.com/DD3Boh">Davide Garberi</a> · <a href="https://github.com/mikooomich">Michael Zh</a></td>
-    </tr>
-  </tbody>
-</table>
-
-<h3>Libraries & Integrations</h3>
-
-<table>
-  <thead>
-    <tr>
-      <th align="center">Project</th>
-      <th align="center">Purpose</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td align="center"><a href="https://better-lyrics.boidu.dev"><strong>Better Lyrics</strong></a></td>
-      <td>Time-synced lyrics with word-by-word highlighting & YouTube Music integration</td>
-    </tr>
-    <tr>
-      <td align="center"><a href="https://github.com/Faroffcode/metroserver"><strong>metroserver</strong></a></td>
-      <td>Listen-together real-time backend</td>
-    </tr>
-    <tr>
-      <td align="center"><a href="https://github.com/aleksey-saenko/MusicRecognizer"><strong>MusicRecognizer</strong></a></td>
-      <td>Music recognition feature & Shazam API integration</td>
-    </tr>
-    <tr>
-      <td align="center"><a href="https://github.com/ZemerTeam/zemer-cipher"><strong>zemer-cipher</strong></a></td>
-      <td>YouTube cipher deobfuscation and PoToken generation</td>
-    </tr>
-    <tr>
-      <td align="center"><a href="https://www.blacksmith.sh"><strong>Blacksmith</strong></a></td>
-      <td>High-performance GitHub Actions runners powering our CI</td>
-    </tr>
-  </tbody>
-</table>
-
-<br/>
-
-
-
-<h3>We also thank the entire open-source community! For every library, tool, and API that powers this project.</h3>
+**Made with ❤️ by Imtiaz Haque**
 
 </div>
-
----
-
-<div align="center">
-
-<h1>Disclaimer</h1>
-
-This project is **not affiliated with, funded, authorized, endorsed by, or in any way associated** with YouTube, Google LLC, or any of their affiliates and subsidiaries.
-
-All trademarks, service marks, and intellectual property rights referenced in this project belong to their respective owners.
-
-</div>
-
----
-
-<div align="center">
-
-<br/>
-
-**Made with ❤️ by Imtiaz Haque
-
-**This project stands with Palestine 🇵🇸**
-
-</div>
-
-
----
-
-## GitHub Search Keywords
-
-Android music player · YouTube Music client · open-source music streaming app · Kotlin Android app · Jetpack Compose · Material 3 · background music playback · offline music · synchronized lyrics · Android music downloader · music library · playlist manager

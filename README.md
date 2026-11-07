@@ -63,20 +63,3 @@ RobinHood translations are managed through Weblate. [Help translate the app](htt
 
 [![Translation status](https://img.shields.io/weblate/progress/robinhood?style=for-the-badge&labelColor=0d1117)](https://hosted.weblate.org/engage/robinhood/)
 
-## Acknowledgements
-
-RobinHood is inspired by [InnerTune](https://github.com/z-huang) and [OuterTune](https://github.com/DD3Boh).
-
-Thanks to the projects and contributors behind [Better Lyrics](https://better-lyrics.boidu.dev), [metroserver](https://github.com/Faroffcode/metroserver), [MusicRecognizer](https://github.com/aleksey-saenko/MusicRecognizer), [zemer-cipher](https://github.com/ZemerTeam/zemer-cipher), and the open-source community.
-
-## Disclaimer
-
-RobinHood is an independent project and is not affiliated with, endorsed by, or associated with YouTube, Google LLC, or their affiliates. All trademarks and other intellectual property belong to their respective owners.
-
----
-
-<div align="center">
-
-**Made with ❤️ by Imtiaz Haque**
-
-</div>

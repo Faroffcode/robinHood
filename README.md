@@ -4,7 +4,9 @@
 
 # RobinHood
 
-### YouTube Music client for Android
+### Open-source YouTube Music client for Android
+
+RobinHood is an Android music streaming app for discovering and playing music from YouTube Music, with background playback, offline downloads, synchronized lyrics, playlists, and a customizable Material 3 interface.
 
 <br/>
 
@@ -33,6 +35,19 @@
 
 > [!WARNING]
 > **Regional Restriction** - If YouTube Music is unavailable in your region, this app will not work without a **VPN or proxy** connecting to a supported region.
+
+## About RobinHood
+
+RobinHood is an independent, open-source YouTube Music client built for Android. It brings music discovery, streaming, library management, and playback customization together in one mobile app. The project is built with Kotlin and Jetpack Compose, using Material 3 for a modern Android interface.
+
+Whether you want to stream songs, listen in the background, save music for offline listening, follow synchronized lyrics, or organize playlists, RobinHood provides a feature-rich way to enjoy the YouTube Music catalog on Android.
+
+**Project highlights**
+- **Platform:** Android (Android 8.0 / API 26 and later)
+- **Language:** Kotlin
+- **UI toolkit:** Jetpack Compose and Material 3
+- **Music source:** YouTube Music
+- **License:** GNU General Public License v3.0 (GPL-3.0)
 
 ---
 
@@ -307,3 +322,10 @@ All trademarks, service marks, and intellectual property rights referenced in th
 **This project stands with Palestine 🇵🇸**
 
 </div>
+
+
+---
+
+## GitHub Search Keywords
+
+Android music player · YouTube Music client · open-source music streaming app · Kotlin Android app · Jetpack Compose · Material 3 · background music playback · offline music · synchronized lyrics · Android music downloader · music library · playlist manager

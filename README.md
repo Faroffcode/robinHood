@@ -51,23 +51,11 @@ RobinHood is an independent, open-source music streaming app for Android that us
 
 ## Download
 
-### Stable release
+All official RobinHood builds are available exclusively through GitHub Releases.
 
-<div align="center">
-
-| Obtainium | IzzyOnDroid |
-| --- | --- |
-| [<img src="assets/badges/obtainium.svg" alt="Obtainium" height="72" />](https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/Faroffcode/robinHood/) | [<img src="assets/badges/izzyondroid.svg" alt="IzzyOnDroid" height="72" />](https://github.com/Faroffcode/robinHood/releases) |
-| OpenAPK | GitHub |
-| [<img src="assets/badges/openapk.svg" alt="OpenAPK" height="72" />](https://github.com/Faroffcode/robinHood/releases) | [<img src="assets/badges/github-stable.svg" alt="Download stable APK" height="72" />](https://github.com/Faroffcode/robinHood/releases/latest/download/RobinHood.apk) |
-
-</div>
-
-### Nightly build
-
-[Download the nightly build with Google Cast](https://github.com/Faroffcode/robinHood/releases/download/nightly/RobinHood-with-Google-Cast.apk)
-
-See [all releases](https://github.com/Faroffcode/robinHood/releases).
+- **[Download the latest stable APK](https://github.com/Faroffcode/robinHood/releases/latest)**
+- **[Download the latest nightly build with Google Cast](https://github.com/Faroffcode/robinHood/releases/download/nightly/RobinHood-with-Google-Cast.apk)**
+- [Browse all releases](https://github.com/Faroffcode/robinHood/releases)
 
 ## Translations
 
